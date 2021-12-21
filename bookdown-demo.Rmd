@@ -93,16 +93,6 @@ We will approximate standard error to 0.027[^longnote]
 
 <!--chapter:end:03-method.Rmd-->
 
-# Applications
-
-Some _significant_ applications are demonstrated in this chapter.
-
-## Example one
-
-## Example two
-
-<!--chapter:end:04-application.Rmd-->
-
 # Final Words
 
 We have finished a nice book.
