@@ -219,10 +219,130 @@ Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
 
 You can write citations, too. For example, we are using the \textbf{bookdown} package \citep{R-bookdown} in this sample book, which was built on top of R Markdown and \textbf{knitr} \citep{xie2015}.
 
-\hypertarget{literature}{%
-\chapter{Literature}\label{literature}}
+\hypertarget{ols}{%
+\chapter{OLS}\label{ols}}
 
-Here is a review of existing methods.
+\hypertarget{single-variable-regression}{%
+\section{single variable regression}\label{single-variable-regression}}
+
+y = 3x
+Y is caused by x. A unit change in x, changes y by 3 units.
+
+\hypertarget{perfect-fit}{%
+\subsection{Perfect fit}\label{perfect-fit}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x =}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+
+\NormalTok{y =}\StringTok{  }\DecValTok{3}\OperatorTok{*}\NormalTok{x}
+
+\NormalTok{reg <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(y}\OperatorTok{~}\NormalTok{x)}
+
+\KeywordTok{summary}\NormalTok{(reg)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in summary.lm(reg): essentially perfect fit: summary may be unreliable
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = y ~ x)
+## 
+## Residuals:
+##        Min         1Q     Median         3Q        Max 
+## -1.035e-13 -4.720e-16  9.610e-16  2.467e-15  5.921e-15 
+## 
+## Coefficients:
+##              Estimate Std. Error  t value Pr(>|t|)    
+## (Intercept) 0.000e+00  5.446e-15 0.00e+00        1    
+## x           3.000e+00  5.208e-16 5.76e+15   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 1.072e-14 on 98 degrees of freedom
+## Multiple R-squared:      1,  Adjusted R-squared:      1 
+## F-statistic: 3.318e+31 on 1 and 98 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+This is essentially a perfect fit. There is barely any standard error. The pval is infinitesimal. However, in reality, that is not the case. There is always some error in measurement which is why we usually add in an error term.
+
+\hypertarget{small-error-in-measurement}{%
+\subsection{Small error in measurement}\label{small-error-in-measurement}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x =}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+\NormalTok{eps =}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{)}
+\NormalTok{y =}\StringTok{  }\DecValTok{3}\OperatorTok{*}\NormalTok{x }\OperatorTok{+}\StringTok{ }\NormalTok{eps}
+
+\NormalTok{reg <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(y}\OperatorTok{~}\NormalTok{x)}
+
+\KeywordTok{summary}\NormalTok{(reg)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = y ~ x)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.38234 -0.56933 -0.06375  0.61628  2.62249 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  0.83778    0.47764   1.754   0.0826 .  
+## x            2.92894    0.04639  63.134   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.9189 on 98 degrees of freedom
+## Multiple R-squared:  0.976,  Adjusted R-squared:  0.9758 
+## F-statistic:  3986 on 1 and 98 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+Now we are able to still recover estimate of x. The pvalues of says that the estimate is significatnlty different from zero. 95\% confidence interval includes the true value.
+
+\hypertarget{large-error-in-measurement}{%
+\subsection{Large error in measurement}\label{large-error-in-measurement}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x =}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{2}\NormalTok{)}
+\NormalTok{eps =}\StringTok{ }\KeywordTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{100}\NormalTok{)}
+\NormalTok{y =}\StringTok{  }\DecValTok{3}\OperatorTok{*}\NormalTok{x }\OperatorTok{+}\StringTok{ }\NormalTok{eps}
+
+\NormalTok{reg <-}\StringTok{ }\KeywordTok{lm}\NormalTok{(y}\OperatorTok{~}\NormalTok{x)}
+
+\KeywordTok{summary}\NormalTok{(reg)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = y ~ x)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -261.782  -55.651    3.665   59.063  229.111 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) -164.321     50.008  -3.286 0.001411 ** 
+## x             17.776      4.855   3.661 0.000407 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 91.64 on 98 degrees of freedom
+## Multiple R-squared:  0.1203, Adjusted R-squared:  0.1113 
+## F-statistic:  13.4 on 1 and 98 DF,  p-value: 0.0004071
+\end{verbatim}
 
 \hypertarget{methods}{%
 \chapter{Methods}\label{methods}}

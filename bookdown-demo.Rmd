@@ -61,11 +61,59 @@ You can write citations, too. For example, we are using the **bookdown** package
 
 <!--chapter:end:01-intro.Rmd-->
 
-# Literature
+# OLS {#ols}
 
-Here is a review of existing methods.
 
-<!--chapter:end:02-literature.Rmd-->
+## single variable regression
+
+y = 3x
+Y is caused by x. A unit change in x, changes y by 3 units.  
+
+
+### Perfect fit
+
+```{r}
+
+x = rnorm(100, 10, 2)
+
+y =  3*x
+
+reg <- lm(y~x)
+
+summary(reg)
+```
+
+
+This is essentially a perfect fit. There is barely any standard error. The pval is infinitesimal. However, in reality, that is not the case. There is always some error in measurement which is why we usually add in an error term.
+
+
+### Small error in measurement
+```{r}
+
+x = rnorm(100, 10, 2)
+eps = rnorm(100,0,1)
+y =  3*x + eps
+
+reg <- lm(y~x)
+
+summary(reg)
+```
+Now we are able to still recover estimate of x. The pvalues of  says that the estimate is significatnlty different from zero. 95% confidence interval includes the true value.
+
+
+### Large error in measurement
+```{r}
+
+x = rnorm(100, 10, 2)
+eps = rnorm(100,0,100)
+y =  3*x + eps
+
+reg <- lm(y~x)
+
+summary(reg)
+```
+
+<!--chapter:end:02-OLS.Rmd-->
 
 # Methods
 
